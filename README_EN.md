@@ -57,4 +57,4 @@ The utility will:
 
 ## License
 
-MIT
+MIT License — see [LICENSE](LICENSE)
