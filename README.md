@@ -1,27 +1,52 @@
 # RustDesk Support Setup
 
-Small Windows utility that configures an existing RustDesk OSS client for a self-hosted server.
+Небольшая утилита для Windows, автоматически настраивающая существующий клиент RustDesk OSS для работы с собственным (self-hosted) сервером.
 
-It changes only these keys in `%APPDATA%\RustDesk\config\RustDesk2.toml`:
+Не требует RustDesk Pro, API или прав администратора.
+
+## Что изменяет
+
+Программа изменяет только три параметра в файле:
+
+```text
+%APPDATA%\RustDesk\config\RustDesk2.toml
+```
 
 - `custom-rendezvous-server`
 - `relay-server`
 - `key`
 
-The utility does not replace the whole TOML file and does not delete existing user settings or connection history.
+Все остальные настройки пользователя и история подключений сохраняются.
 
-## Build
+## Сборка
 
-Set your values at build time:
-
-```powershell
-go build -buildvcs=false -ldflags "-H windowsgui -s -w -X main.serverValue=YOUR_SERVER -X main.keyValue=YOUR_SERVER_PUBLIC_KEY" -o support.exe .
-```
-
-Example placeholders:
+Соберите программу, указав адрес своего сервера и публичный ключ:
 
 ```powershell
-go build -buildvcs=false -ldflags "-H windowsgui -s -w -X main.serverValue=example.com -X main.keyValue=public-key-here" -o support.exe .
+go build -buildvcs=false -ldflags "-H windowsgui -s -w -X main.serverValue=ВАШ_СЕРВЕР -X main.keyValue=ВАШ_ПУБЛИЧНЫЙ_КЛЮЧ" -o support.exe .
 ```
 
-Do not commit the built `support.exe` if it contains private deployment values.
+Пример:
+
+```powershell
+go build -buildvcs=false -ldflags "-H windowsgui -s -w -X main.serverValue=example.com -X main.keyValue=PUBLIC_KEY" -o support.exe .
+```
+
+Готовые бинарные файлы не публикуются.
+
+Каждый пользователь собирает `support.exe` со своим адресом сервера и публичным ключом.
+
+## Использование
+
+Запустите `support.exe`.
+
+Программа автоматически:
+
+- найдёт существующую конфигурацию RustDesk;
+- обновит только параметры self-hosted сервера;
+- сохранит остальные настройки пользователя;
+- запустит RustDesk.
+
+## Лицензия
+
+MIT
