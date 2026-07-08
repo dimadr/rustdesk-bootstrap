@@ -4,6 +4,18 @@ Small Windows utility that configures an existing RustDesk OSS client for a self
 
 Works without RustDesk Pro, API or administrator privileges.
 
+## Why?
+
+This utility is designed for real-world remote support scenarios.
+
+Sometimes the person on the other side is not technical at all. They may not know where RustDesk settings are, how to copy a public key, or even how to find the right menu.
+
+With this utility, you can prepare a small `support.exe` for your own self-hosted RustDesk server and send it to the user.
+
+The user only needs to run one file. No manual configuration is required.
+
+You can send the executable directly, or pack it into an archive with a password, depending on your paranoia level and delivery channel.
+
 ## What it changes
 
 The utility updates only these keys in `%APPDATA%\RustDesk\config\RustDesk2.toml`:
