@@ -61,4 +61,4 @@ go build -buildvcs=false -ldflags "-H windowsgui -s -w -X main.serverValue=examp
 
 ## Лицензия
 
-MIT
+MIT License — see [LICENSE](LICENSE)
