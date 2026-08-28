@@ -8,10 +8,8 @@ import (
 
 func TestMain(m *testing.M) {
 	serverValue = "example.com"
+	relayValue = "relay.example.com"
 	keyValue = "public-key-for-tests"
-	desiredConfig["custom-rendezvous-server"] = serverValue
-	desiredConfig["relay-server"] = serverValue
-	desiredConfig["key"] = keyValue
 	os.Exit(m.Run())
 }
 
@@ -33,7 +31,7 @@ func TestRewriteTomlUpdatesOnlyTargetKeys(t *testing.T) {
 	want := strings.Join([]string{
 		"access-mode = \"full\"",
 		"custom-rendezvous-server = \"example.com\"",
-		"relay-server = \"example.com\"",
+		"relay-server = \"relay.example.com\"",
 		"key = \"public-key-for-tests\"",
 		"direct-server = \"unchanged\"",
 		"",
@@ -56,7 +54,7 @@ func TestRewriteTomlAddsMissingKeys(t *testing.T) {
 	for _, line := range []string{
 		"access-mode = \"full\"",
 		"custom-rendezvous-server = \"example.com\"",
-		"relay-server = \"example.com\"",
+		"relay-server = \"relay.example.com\"",
 		"key = \"public-key-for-tests\"",
 	} {
 		if !strings.Contains(text, line) {

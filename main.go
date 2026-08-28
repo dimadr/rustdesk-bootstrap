@@ -15,14 +15,9 @@ import (
 
 var (
 	serverValue = ""
+	relayValue  = ""
 	keyValue    = ""
 )
-
-var desiredConfig = map[string]string{
-	"custom-rendezvous-server": serverValue,
-	"relay-server":             serverValue,
-	"key":                      keyValue,
-}
 
 var desiredOrder = []string{
 	"custom-rendezvous-server",
@@ -69,7 +64,10 @@ func run() error {
 
 func validateBuildConfig() error {
 	if serverValue == "" {
-		return errors.New("server value is not set at build time")
+		return errors.New("rendezvous server value is not set at build time")
+	}
+	if relayValue == "" {
+		relayValue = serverValue
 	}
 	if keyValue == "" {
 		return errors.New("server public key is not set at build time")
@@ -131,6 +129,7 @@ func updateConfig(path string) error {
 }
 
 func rewriteToml(input []byte) ([]byte, bool) {
+	desiredConfig := buildDesiredConfig()
 	newline := []byte("\n")
 	if bytes.Contains(input, []byte("\r\n")) {
 		newline = []byte("\r\n")
@@ -177,6 +176,19 @@ func rewriteToml(input []byte) ([]byte, bool) {
 	}
 
 	return output, true
+}
+
+func buildDesiredConfig() map[string]string {
+	relay := relayValue
+	if relay == "" {
+		relay = serverValue
+	}
+
+	return map[string]string{
+		"custom-rendezvous-server": serverValue,
+		"relay-server":             relay,
+		"key":                      keyValue,
+	}
 }
 
 func splitLines(input []byte) [][]byte {
